@@ -1,0 +1,57 @@
+# %% 
+from transformers import BertTokenizer, BertForSequenceClassification
+from transformers import pipeline
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
+
+# %% With ProsusAI FinBert
+tokenizer = AutoTokenizer.from_pretrained("ProsusAI/finbert")
+
+model = AutoModelForSequenceClassification.from_pretrained("ProsusAI/finbert",num_labels=3)
+
+prosusai_nlp = pipeline("sentiment-analysis", model=model, tokenizer=tokenizer)
+
+# %% Apple scores  
+
+sentences = ["The COVID-19 pandemic has had, and continues to have, a significant impact around the world, prompting governments and businesses to take unprecedented measures, such as restrictions on travel and business operations, temporary closures of businesses, and quarantine and shelter-in-place orders. The COVID-19 pandemic has at times significantly curtailed global economic activity and caused significant volatility and disruption in global financial markets. The COVID-19 pandemic and the measures taken by many countries in response have affected and could in the future materially impact the Company’s business, results of operations and financial condition, as well as the price of the Company’s stock.",
+             "Total net sales increased 33% or $91.3 billion during 2021 compared to 2020, driven by growth in all Products and Services categories. Year-over-year net sales during 2021 also grew in each of the Company’s reportable segments. In April 2021, the Company announced an increase to its current share repurchase program authorization from $225 billion to $315 billion and raised its quarterly dividend from $0.205 to $0.22 per share beginning in May 2021. During 2021, the Company repurchased $85.5 billion of its common stock and paid dividends and dividend equivalents of $14.5 billion.",
+             "The consolidated financial statements include the accounts of Apple Inc. and its wholly owned subsidiaries (collectively “Apple” or the “Company”). Intercompany accounts and transactions have been eliminated. In the opinion of the Company’s management, the consolidated financial statements reflect all adjustments, which are normal and recurring in nature, necessary for fair financial statement presentation. The preparation of these consolidated financial statements and accompanying notes in conformity with U.S. generally accepted accounting principles requires management to make estimates and assumptions that affect the amounts reported. Actual results could differ materially from those estimates. Certain prior period amounts in the consolidated financial statements and accompanying notes have been reclassified to conform to the current period’s presentation."]
+
+[{'label': 'negative', 'score': 0.9114028215408325}, {'label': 'positive', 'score': 0.9453129768371582}, {'label': 'neutral', 'score': 0.8347428441047668}]
+prosusai_results = prosusai_nlp(sentences)
+
+# %%Apple Discussion score
+In the Apple 10k, there was a discussion of how Covid has adversely affected the company's
+stock prices, supply shortages, and employees. Python scored this discussion part of the 10k as negative,
+since the overall sentiment about how Covid had affected the company was negative.
+
+# %%Apple financial analysis score
+In the financial analysis of the company in Apple's 10k, the score that was produced was
+positive as net sales greatly increased from 2020 to 2021'
+
+#%%Apple Management
+The score for the Management part of the 10k was neutral overall, since there was a
+discription of the different roles that management such as following all of the GAAP
+policies for filing the different financial statements.
+
+
+# %% show results
+print(prosusai_results)
+
+# %% finbert-tone Does not work. finbert-pretrain works. HKUST Sentiment Analysis-Classification
+finbert = BertForSequenceClassification.from_pretrained('yiyanghkust/finbert-pretrain',num_labels=3)
+tokenizer_hkust = BertTokenizer.from_pretrained('yiyanghkust/finbert-pretrain')
+
+# %% 
+results = nlp(sentences)
+print(results)
+
+#%%
+https://www.netcials.com/tools/phpgraphlib-master/image/nasdaq-stock-5years/5-year-weekly-price-chart-Apple-Inc.png
+
+In the Url above, the stock price of Apple has had an average return of 38% which
+shows that the overall sentiment of Apple is positive in the market. Apple boast of positive
+net sales for its company in its 10k which in turn makes it one of the more attractive
+stocks to buy in the market Although Covid negatively affects the net sales, the market continues to buy Apple's goods and services at a high demand.
+Python has given our group an unbiased view of the company's 10k which  helps to decipher
+if Apple is a good company to invest in.
